@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "modulo.c"
 
 struct Contato{
     char nome[100];
@@ -8,38 +9,16 @@ struct Contato{
     char email[100];
 };
 
-void limparTela(){
-    #ifdef _WIN32
-        system("cls");
-    #else 
-        system("clear");
-    #endif
-}
-
-void removerNovalinha(char *str){
-    size_t len = strlen(str);
-    if (len > 0 && str[len - 1] == '\n'){
-        str[len - 1] = '\0';
-    }
-}
-
 int main(){
     struct Contato contatos[100];
     int opcao, numContatos = 0;
     char nome[100];
 
     do{
-        limparTela();
-        printf("Selecione uma opcao:\n");
-        printf("1- Adicionar contato\n");
-        printf("2- Visualizar contatos\n");
-        printf("3- Editar contato\n");
-        printf("4- Excluir contato\n");
-        printf("5- Sair\n");
-        printf("Digite sua opcao: ");
+        menuPrincipal();
         scanf("%d", &opcao);
         getchar();
-
+        
         switch (opcao){
         case 1:
             printf("Digite o nome do contato:\n");
@@ -52,18 +31,21 @@ int main(){
             fgets(contatos[numContatos].email, 100, stdin);
             removerNovalinha(contatos[numContatos].email);
             numContatos++;
-            printf("Contato adicionado com sucesso!\n");
-            printf("Digite (Enter) para continuar...\n");
-            getchar();
+            menu2();
+            getchar();   
             break;
         case 2:
-            printf("Contatos Salvos: %d\n", numContatos);
-            
+            limparTela();
+            printf("+------------------------------------------+\n");
+            printf("|            Contatos Salvos: %d            |\n", numContatos);
+
             for (int i = 0; i < numContatos; i++){
-                printf("+------------------------------------------+\n");    
-                printf("Nome: %s\n", contatos[i].nome);
-                printf("Telefone: %s\n", contatos[i].telefone);
-                printf("Email: %s\n", contatos[i].email);
+                printf("+------------------------------------------+\n");
+                printf("| Nome: %s |\n", contatos[i].nome);
+                printf("| Telefone: %s |\n", contatos[i].telefone);  
+                printf("| Email: %s |\n", contatos[i].email);    
+                printf("+------------------------------------------+\n");
+
             }
             printf("\nDigite (Enter) para continuar...");
             getchar();
@@ -87,8 +69,8 @@ int main(){
                     fgets(contatos[i].email, 100, stdin);
                     removerNovalinha(contatos[i].email);
                 }
-
-                printf("Contado editado com sucesso!");
+                menu3();
+                getchar();
             }   
             break;
         case 4:
@@ -104,10 +86,7 @@ int main(){
                     numContatos --;
                 }
             }
-            printf("|----------------------------------|\n");
-            printf("|Contado excluido com sucesso!     |");
-            printf("|Digite (Enter) para continuar...  |\n");
-            printf("|----------------------------------|\n");
+            menu4();
             getchar();
             break;
         case 5:
