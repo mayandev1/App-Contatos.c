@@ -1,1 +1,1 @@
-# App-Contatos em C
+# App de contatos em C
